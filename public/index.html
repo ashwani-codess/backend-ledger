@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Server Status</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #0f172a;
+      font-family: Arial, sans-serif;
+      color: white;
+    }
+
+    .card {
+      background: #1e293b;
+      padding: 40px;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+      width: 320px;
+    }
+
+    .pulse {
+      height: 15px;
+      width: 15px;
+      background: #22c55e;
+      border-radius: 50%;
+      margin: 0 auto 15px;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(34,197,94, 0.7); }
+      70% { box-shadow: 0 0 0 15px rgba(34,197,94, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(34,197,94, 0); }
+    }
+
+    h1 {
+      margin-bottom: 10px;
+    }
+
+    .status {
+      margin-top: 15px;
+      font-size: 14px;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="card">
+  <div class="pulse"></div>
+  <h1>🚀 Server is Running</h1>
+  <div class="status" id="dbStatus">
+    Checking database status...
+  </div>
+</div>
+
+<script>
+  fetch("/health")
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById("dbStatus").innerText =
+        "Database: " + data.database;
+    })
+    .catch(() => {
+      document.getElementById("dbStatus").innerText =
+        "Database: ❌ Not Connected";
+    });
+</script>
+
+</body>
+</html>
